@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitnessPro Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollreveal/4.0.9/scrollreveal.min.js"></script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #facc15;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="bg-gray-800 p-8 flex justify-between items-center sticky top-0 z-50 shadow-lg">
+        <h1 class="text-2xl font-bold">FitnessPro</h1>
+        <nav>
+            <ul class="flex space-x-8">
+                <li><a href="#dashboard" class="hover:text-yellow-400">Dashboard</a></li>
+                <li><a href="/profile" class="hover:text-yellow-400">Profile</a></li>
+                <li><a href="/community" class="hover:text-yellow-400">Community</a></li>
+                <li><a href="/" class="bg-red-500 px-4 py-2 rounded hover:bg-red-700">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="dashboard" class="flex flex-col md:flex-row items-center justify-center px-10 py-48 space-y-10 md:space-y-0 bg-cover bg-center relative group transition-all duration-500 hover:scale-105"
+         style="background-image: url('https://cdn.prod.website-files.com/63d5cc6761dbe779bd7fdbc4/63d86adcef8e496b9d4fb375_5d88256e9d7733393ecca010_fitness-motivation-quotes.jpeg'); background-blend-mode: overlay; background-color: rgba(20, 20, 20, 0.6);">
+    
+        <div class="md:w-2/3 flex text-center bg-opacity-70 p-8 rounded-lg transition-opacity duration-500 group-hover:bg-opacity-90">
+            <h1 class="text-5xl font-extrabold text-white-400">Welcome, <%= user ? user.name : 'Guest' %>!</h1>
+        </div>
+    </section>
+
+  <!-- Stats Section -->
+<section id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 px-20 py-24 opacity-0 transition-opacity duration-500 ease-in-out hover:opacity-100">
+    <a href="/workout" class="bg-gray-800 p-6 rounded-lg text-center shadow-lg hover:scale-105 transition block">
+        <i class="fas fa-running text-yellow-400 text-3xl"></i>
+        <h3 class="text-xl font-semibold mt-2">Workouts</h3>
+        <p class="text-gray-300">25 Sessions</p>
+    </a>
+    <div class="bg-gray-800 p-6 rounded-lg text-center shadow-lg hover:scale-105 transition">
+        <i class="fas fa-dumbbell text-yellow-400 text-3xl"></i>
+        <h3 class="text-xl font-semibold mt-2">Strength</h3>
+        <p class="text-gray-300">+10% Progress</p>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-lg text-center shadow-lg hover:scale-105 transition">
+        <i class="fas fa-chart-line text-yellow-400 text-3xl"></i>
+        <h3 class="text-xl font-semibold mt-2">Calories Burned</h3>
+        <p class="text-gray-300">5,200 Kcal</p>
+    </div>
+</section>
+
+
+
+
+<!-- Recent Posts Section -->
+<section id="recent-posts-section" 
+    class="p-10 opacity-0 transition-opacity duration-500 ease-in-out hover:opacity-100">
+    <h2 class="text-2xl font-semibold">Recent Posts</h2>
+    <% if (posts && posts.length > 0) { %>
+        <% posts.forEach(post => { %>
+            <div class="bg-gray-800 p-5 rounded-lg mt-5 shadow-lg hover:scale-105 transition">
+                <h3 class="text-xl font-semibold"><%= post.title %></h3>
+                <p class="text-gray-300 mt-2"><%= post.content %></p>
+                <small class="text-gray-400">By <%= post.author %> | <%= post.date %></small>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p class="text-gray-400 mt-5">No posts available yet.</p>
+    <% } %>
+</section>
+
+<!-- Fitness Chart Section -->
+<section id="fitness-chart-section" 
+    class="p-10 opacity-0 transition-opacity duration-500 ease-in-out hover:opacity-100">
+    <h2 class="text-2xl font-semibold">Workout Progress</h2>
+    <div class="bg-gray-800 p-6 rounded-lg mt-5 shadow-lg hover:scale-105 transition">
+        <canvas id="fitnessChart"></canvas>
+    </div>
+</section>
+
+<script>
+    // Chart.js Code
+    const ctx = document.getElementById('fitnessChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Workout Progress',
+                data: [10, 15, 20, 30, 25, 40, 50], 
+                borderColor: '#facc15',
+                backgroundColor: 'rgba(250, 204, 21, 0.2)',
+                fill: true
+            }]
+        }
+    });
+</script>
+
+
+
+</body>
+</html>

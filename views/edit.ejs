@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | FitnessPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+<header class="bg-gray-800 p-8 flex justify-between items-center shadow-lg">
+    <h1 class="text-2xl font-bold">FitnessPro</h1>
+    <nav>
+        <ul class="flex space-x-8">
+            <li><a href="/dashboard" class="hover:text-yellow-400">Dashboard</a></li>
+            <li><a href="/profile" class="hover:text-yellow-400">Profile</a></li>
+            <li><a href="/" class="bg-red-500 px-4 py-2 rounded hover:bg-red-700">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="max-w-4xl mx-auto mt-12 p-6 bg-gray-800 rounded-lg shadow-xl">
+    <h2 class="text-3xl font-bold text-zinc-100 text-center">Edit Profile</h2>
+    <form id="profileForm" class="mt-6" enctype="multipart/form-data">
+        
+        <label class="block text-gray-300">Name</label>
+        <input type="text" id="name" name="name" value="<%= user.name %>" required 
+               class="w-full p-2 mt-2 bg-gray-700 border border-gray-600 rounded">
+
+        <label class="block text-gray-300 mt-4">Bio</label>
+        <textarea id="bio" name="bio" class="w-full p-2 mt-2 bg-gray-700 border border-gray-600 rounded"><%= user.bio %></textarea>
+
+        <label class="block text-gray-300 mt-4">Profile Picture</label>
+        <img id="profileImage" src="<%= user.profilePic ? user.profilePic + '?t=' + Date.now() : '/images/default-avatar.png' %>" 
+             alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-gray-400">
+        <input type="file" id="profilePic" name="profilePic" accept="image/*"
+               class="w-full p-2 mt-2 bg-gray-700 border border-gray-600 rounded">
+
+        <!-- Delete Profile Picture Button -->
+        <button type="button" id="deleteProfilePic" class="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700">
+            Delete
+        </button>
+
+        <button type="submit" class="mt-6 w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2 rounded-lg shadow-md hover:scale-105 transition">
+            Update Profile
+        </button>
+    </form> 
+
+    <p id="statusMessage" class="text-center mt-4"></p>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("profileForm");
+        const statusMessage = document.getElementById("statusMessage");
+        const profileImage = document.getElementById("profileImage");
+        const deleteButton = document.getElementById("deleteProfilePic");
+        
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("/edit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    statusMessage.textContent = "Profile updated successfully!";
+                    statusMessage.classList.add("text-green-400");
+
+                    document.getElementById("name").value = result.user.name;
+                    document.getElementById("bio").value = result.user.bio;
+
+                    if (result.user.profilePic) {
+                        profileImage.src = result.user.profilePic + '?t=' + Date.now();
+                    }
+                } else {
+                    statusMessage.textContent = "Failed to update profile.";
+                    statusMessage.classList.add("text-red-400");
+                }
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                statusMessage.textContent = "Something went wrong!";
+                statusMessage.classList.add("text-red-400");
+            }
+        });
+
+        deleteButton.addEventListener("click", async () => {
+            profileImage.src = "/images/default-avatar.png";
+            document.getElementById("profilePic").value = "";
+
+            try {
+                const response = await fetch("/delete-profile-pic", { method: "POST" });
+                const result = await response.json();
+
+                if (result.success) {
+                    statusMessage.textContent = "Profile picture deleted.";
+                    statusMessage.classList.add("text-green-400");
+                } else {
+                    statusMessage.textContent = "Failed to delete profile picture.";
+                    statusMessage.classList.add("text-red-400");
+                }
+            } catch (error) {
+                console.error("Error deleting profile picture:", error);
+                statusMessage.textContent = "Something went wrong!";
+                statusMessage.classList.add("text-red-400");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

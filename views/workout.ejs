@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Page fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Report fade-in effect */
+        .fade-in-report {
+            opacity: 0;
+            animation: fadeInReport 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeInReport {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex justify-center items-center min-h-screen">
+
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-lg text-center fade-in">
+        <h1 class="text-3xl font-bold mb-4 text-yellow-400">Upload Your Workout Video</h1>
+        
+        <form id="uploadForm" class="space-y-4" enctype="multipart/form-data">
+            <label for="workoutVideo" class="block text-lg font-medium">Select a Video</label>
+            <input type="file" id="workoutVideo" accept="video/*" required 
+                class="block w-full px-3 py-2 bg-gray-700 text-white rounded-md border border-gray-600 cursor-pointer transition focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+            
+            <button type="submit" 
+                class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+                Upload
+            </button>
+        </form>
+
+        <h2 class="text-xl font-semibold mt-6 text-yellow-400">Preview</h2>
+        <video id="videoPreview" controls class="w-full mt-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500"></video>
+
+        <!-- Generate Report Button -->
+        <button id="generateReport" 
+            class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
+            Generate Report
+        </button>
+
+        <h2 class="text-xl font-semibold mt-6 text-yellow-400">Workout Report</h2>
+        <div id="report" class="mt-2 p-4 bg-gray-700 rounded-lg text-white opacity-0"></div>
+    </div>
+
+    <script>
+        document.getElementById('workoutVideo').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPreview = document.getElementById('videoPreview');
+                videoPreview.src = URL.createObjectURL(file);
+                videoPreview.classList.remove('opacity-0');
+            }
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const fileInput = document.getElementById('workoutVideo');
+            if (!fileInput.files.length) {
+                alert('Please select a video file.');
+                return;
+            }
+
+            alert('Video uploaded successfully!');
+        });
+
+        document.getElementById('generateReport').addEventListener('click', async function() {
+            const fileInput = document.getElementById('workoutVideo');
+            const reportDiv = document.getElementById('report');
+
+            if (!fileInput.files.length) {
+                alert('Please upload a video first.');
+                return;
+            }
+
+            // Simulate loading state
+            reportDiv.innerHTML = `<p class="text-lg text-yellow-400">Verifying... ⏳</p>`;
+            reportDiv.classList.remove('opacity-0');
+            
+            // Simulate verification delay
+            setTimeout(() => {
+                const isVerified = Math.random() > 0.5; // Random Yes ✅ or No ❌
+                reportDiv.innerHTML = `
+                    <p class="text-lg"><strong>Workout Verified:</strong> ${isVerified ? "✅ Yes" : "❌ No"}</p>
+                    <p class="text-lg"><strong>Feedback:</strong> ${isVerified ? "Great job! Keep it up!" : "Try to maintain proper form."}</p>
+                `;
+                reportDiv.classList.add('fade-in-report');
+            }, 2000); // Simulated 2-second delay
+        });
+    </script>
+
+</body>
+</html>
