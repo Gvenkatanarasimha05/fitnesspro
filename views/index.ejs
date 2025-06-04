@@ -12,16 +12,15 @@
         document.addEventListener("DOMContentLoaded", function() {
             const controller = new ScrollMagic.Controller();
     
-            // Initially hide hero section
+            
             gsap.set(".hero-text, .hero-img", { opacity: 0, visibility: "hidden" });
     
-            // Function to animate Hero Section
+          
             function animateHero() {
                 gsap.to(".hero-text", { duration: 1, x: 0, opacity: 1, visibility: "visible", ease: "power2.out" });
                 gsap.to(".hero-img", { duration: 1, x: 0, opacity: 1, visibility: "visible", ease: "power2.out", delay: 0.5 });
             }
     
-            // Hero Section Animation on Page Load
             animateHero();
     
             
