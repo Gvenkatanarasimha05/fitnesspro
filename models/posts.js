@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    username: { type: String, required: true }, // Store username for quick access
+    username: { type: String, required: true },
     content: { type: String, required: true },
-    postType: { type: String, enum: ['user', 'influencer'], default: 'user' }, // Distinguish user vs influencer posts
+    postType: { type: String, enum: ['user', 'influencer'], default: 'user' },
     createdAt: { type: Date, default: Date.now }
 });
 
