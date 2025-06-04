@@ -6,7 +6,6 @@
     <title>Workout Verification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Page fade-in animation */
         .fade-in {
             opacity: 0;
             transform: translateY(-20px);
@@ -20,7 +19,6 @@
             }
         }
 
-        /* Report fade-in effect */
         .fade-in-report {
             opacity: 0;
             animation: fadeInReport 0.5s ease-in-out forwards;
@@ -52,7 +50,6 @@
         <h2 class="text-xl font-semibold mt-6 text-yellow-400">Preview</h2>
         <video id="videoPreview" controls class="w-full mt-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500"></video>
 
-        <!-- Generate Report Button -->
         <button id="generateReport" 
             class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 transform hover:scale-105">
             Generate Report
@@ -93,19 +90,17 @@
                 return;
             }
 
-            // Simulate loading state
             reportDiv.innerHTML = `<p class="text-lg text-yellow-400">Verifying... ⏳</p>`;
             reportDiv.classList.remove('opacity-0');
             
-            // Simulate verification delay
             setTimeout(() => {
-                const isVerified = Math.random() > 0.5; // Random Yes ✅ or No ❌
+                const isVerified = Math.random() > 0.5;
                 reportDiv.innerHTML = `
                     <p class="text-lg"><strong>Workout Verified:</strong> ${isVerified ? "✅ Yes" : "❌ No"}</p>
                     <p class="text-lg"><strong>Feedback:</strong> ${isVerified ? "Great job! Keep it up!" : "Try to maintain proper form."}</p>
                 `;
                 reportDiv.classList.add('fade-in-report');
-            }, 2000); // Simulated 2-second delay
+            }, 2000);
         });
     </script>
 
