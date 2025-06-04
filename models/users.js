@@ -4,8 +4,8 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    bio: { type: String, default: "" }, // Add bio field
-    profilePic: { type: String, default: "/images/default-avatar.png" } // Add profilePic field
+    bio: { type: String, default: "" },
+    profilePic: { type: String, default: "/images/default-avatar.png" }
 });
 
 const User = mongoose.model('User', userSchema);
