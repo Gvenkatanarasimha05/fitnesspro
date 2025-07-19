@@ -1,4 +1,4 @@
-itnessPro – A Fitness Trainer & Member Portal
+FitnessPro – A Fitness Trainer & Member Portal
 🔍 Overview:
 FitnessPro is a web-based platform designed to help fitness trainers and gym members interact through a structured system. It allows trainers to showcase themselves and users to register, log in, and upload content or details related to their fitness journey. This can be used as a mini CMS (Content Management System) for fitness professionals or as a basic social portal for a gym/fitness club.
 
